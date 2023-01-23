@@ -1,0 +1,14 @@
+.apply_button{
+    justify-content: center;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;    
+    border: none !important;
+}
+.FinalAmount{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    font-style: italic;
+    color: var(--color-primary);
+}
