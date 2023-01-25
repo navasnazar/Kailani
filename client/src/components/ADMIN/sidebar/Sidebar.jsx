@@ -17,19 +17,19 @@ const Sidebar = () => {
         <ul className='ul_container'>
           <li className='li_container'>
             <div className='sidebar_icons'><AiOutlineHome/></div>
-            <Link to='/admin'>Home</Link>
+            <Link className='sidebar_menu' to='/admin'>Home</Link>
           </li>
           <li className='li_container'>
             <div className='sidebar_icons'><RiServiceLine/></div>
-            <Link to="/admin/services">Services</Link>
+            <Link className='sidebar_menu' to="/admin/services">Services</Link>
           </li>
           <li className='li_container'>
             <div className='sidebar_icons'><FiGrid/></div>
-            <Link to="/admin/booking">Booking</Link>
+            <Link className='sidebar_menu' to="/admin/booking">Booking</Link>
           </li>
           <li className='li_container'>
             <div className='sidebar_icons'><FiUsers/></div>
-            <Link to="/admin/users">Users</Link>
+            <Link className='sidebar_menu' to="/admin/users">Users</Link>
           </li>
           
         </ul>

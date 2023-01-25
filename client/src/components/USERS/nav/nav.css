@@ -91,3 +91,8 @@ nav .registerButton.active{
     display: flex;
     justify-content: center;
 }
+.validation_err{
+    color: rgb(255, 0, 0);
+    font-size: 15px;
+    font-style: italic;
+}

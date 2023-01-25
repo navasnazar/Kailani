@@ -9,6 +9,9 @@ import { useState } from 'react'
 import {FiGrid} from 'react-icons/fi'
 import axios from 'axios'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import jwt from 'jwt-decode'
+import {useDispatch} from 'react-redux'
+import {getUserLoginDetails} from '../../../redux/userReducer'
 
 //Registration details
 import {
@@ -33,6 +36,11 @@ const HomeNav = () => {
   const [activeNav, setActiveNav]=useState('#')
   const [loginVisible, setLoginVisible]=useState(false);
   const [navActive, setNavActive]=useState(true)
+  const [regErr, setRegErr]=useState('')
+  const [loginErr, setLoginErr]=useState('')
+  
+  const dispatch = useDispatch();
+
 
   console.log(activeNav);
 
@@ -43,9 +51,6 @@ const HomeNav = () => {
     setLoginVisible(true)
     setNavActive(false)
     console.log('login call done');
-    
-   
-    
   }
   
 
@@ -86,17 +91,23 @@ const HomeNav = () => {
   const [visible, setVisible] = useState(false);
   
 
-
-  //koduth vitt - start
+// register call start -------------------->
   const onCreate = async (values) => {
     console.log('Received values of form yyyy: ', values);
-    const response = await axios.post('http://localhost:8000/admin/register',values).then((res)=>{
+    const response = await axios.post('http://localhost:8000/signup',values).then((res)=>{
       let resData = res.data
       console.log(resData);
+      if(resData.status=='err'){
+        setRegErr(resData.data)
+      }
+      if(resData.status=='done'){
+        setVisible(false);
+        setLoginVisible(true)
+      }
     })
-    setVisible(false);
   };
-  //koduth vitt - end
+// register call end -------------------->
+
 
 
 
@@ -104,9 +115,6 @@ const HomeNav = () => {
   const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-      console.log('Received values of form xxx: ', values);
-    };
 
     return (
       <div>
@@ -128,6 +136,7 @@ const HomeNav = () => {
             });
         }}
       >
+        <div className='validation_err'>{regErr}</div>
         <Form
           {...formItemLayout}
           form={form}
@@ -249,10 +258,27 @@ const HomeNav = () => {
 
 
 
-
-  const onFinish = (values) => {
+// login start -------------------->
+  const onFinish = async (values) => {
     console.log('Received values of form: ', values);
+    const response = await axios.post('http://localhost:8000/login',values).then((res)=>{
+      let resData = res.data
+      console.log(resData);
+      if(resData.status=='err'){
+        setLoginErr(resData.data)
+      }
+      if(resData.status=='done'){
+        localStorage.setItem('userToken', resData.user)
+        const user = jwt(resData.user)
+        dispatch(getUserLoginDetails(user))
+        setVisible(false);
+        setLoginVisible(false)
+        setNavActive(true)
+        
+      }
+    })
   };
+//login end -------------------->
 
 
   const setNavFunction = ()=>{
@@ -319,6 +345,7 @@ const HomeNav = () => {
 
       <div>
         {loginVisible ?
+        
             <Form
             visible={loginVisible}
             name="normal_login"
@@ -369,7 +396,9 @@ const HomeNav = () => {
                 Log in
               </Button>
             </Form.Item>
-           
+
+            <div className='validation_err'>{loginErr}</div>
+
             <Form.Item>
               <div className='login_back'>
                   <a onClick={setNavFunction}> Back</a>

@@ -13,6 +13,7 @@ import AdminUsers from './Pages/admin/Users'
 import AdminBooking from './Pages/admin/Booking'
 import AdminServices from './Pages/admin/Services'
 import Payment from './Pages/user/Payment'
+import UserProfile from './Pages/user/Profile'
 
 const App = () => {
 
@@ -27,6 +28,7 @@ const App = () => {
             <Route exact path="/booking" element={<Booking/>} />
             <Route exact path="/register" element={<Register/>} />
             <Route exact path="/proceed" element={<Payment/>} />
+            <Route exact path="/profile" element={<UserProfile/>} />
           </Routes>
   
         <Routes>

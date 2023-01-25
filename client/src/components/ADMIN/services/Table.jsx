@@ -250,60 +250,7 @@ const Table = () => {
 
   return (
     <div>
-        <div>
-            <FormControlLabel
-                control={<MaterialUISwitch 
-                    sx={{ m: 1 }} 
-                    checked={preferDarkMode}
-                    onChange={hanldeDarkModeChange} 
-                    />}
-                label="Theme"
-            />
-            <p className='validation'> {fldValidation} </p>
-            <MuiThemeProvider theme={theme}>
-                <MaterialTable title="Service Details"
-                    data={data}
-                    columns={columns}
-                    
-                    options={{
-                        search:true,
-                        filtering:false,
-                        exportButton:true
-                    }}
-                    editable={{
-                        
-                        onRowAdd:(newRow)=>new Promise((resolve, reject)=>{
-                            if(newRow.title &&  newRow.service && newRow.description && newRow.amount){
-                                // console.log('data',newRow)
-                                setUploadData(newRow)
-                                setFldValidation('')
-                                setDataSubmit('done')
-                            }else{
-                                console.log('empty',newRow)
-                                setFldValidation('** All Field Required')
-                            }
-                            resolve()
-                        }),
-                        onRowDelete:selectedRow=>new Promise((resolve, reject)=>{
-                            console.log(selectedRow);
-                            handleDeleteData(selectedRow)
-                            resolve()
-                        }),
-                        onRowUpdate:(updatedRow)=>new Promise((resolve, reject)=>{
-                            console.log(updatedRow);
-                            handleEditData(updatedRow)
-                            resolve()
-                        })
-                    }}
-                    options={{
-                        actionsColumnIndex:-1,
-                        addRowPosition:'first'
-                    }}
-                >
-                </MaterialTable>
-            </MuiThemeProvider>
-        </div>
-        {
+      {
             dataSubmit=='done' ? 
         
                 <div className="image_field">
@@ -378,6 +325,60 @@ const Table = () => {
             </div>
         : ''
         }
+        <div>
+            <FormControlLabel
+                control={<MaterialUISwitch 
+                    sx={{ m: 1 }} 
+                    checked={preferDarkMode}
+                    onChange={hanldeDarkModeChange} 
+                    />}
+                label="Theme"
+            />
+            <p className='validation'> {fldValidation} </p>
+            <MuiThemeProvider theme={theme}>
+                <MaterialTable title="Service Details"
+                    data={data}
+                    columns={columns}
+                    
+                    options={{
+                        search:true,
+                        filtering:false,
+                        exportButton:true
+                    }}
+                    editable={{
+                        
+                        onRowAdd:(newRow)=>new Promise((resolve, reject)=>{
+                            if(newRow.title &&  newRow.service && newRow.description && newRow.amount){
+                                // console.log('data',newRow)
+                                setUploadData(newRow)
+                                setFldValidation('')
+                                setDataSubmit('done')
+                            }else{
+                                console.log('empty',newRow)
+                                setFldValidation('** All Field Required')
+                            }
+                            resolve()
+                        }),
+                        onRowDelete:selectedRow=>new Promise((resolve, reject)=>{
+                            console.log(selectedRow);
+                            handleDeleteData(selectedRow)
+                            resolve()
+                        }),
+                        onRowUpdate:(updatedRow)=>new Promise((resolve, reject)=>{
+                            console.log(updatedRow);
+                            handleEditData(updatedRow)
+                            resolve()
+                        })
+                    }}
+                    options={{
+                        actionsColumnIndex:-1,
+                        addRowPosition:'first'
+                    }}
+                >
+                </MaterialTable>
+            </MuiThemeProvider>
+        </div>
+        
         
         
     </div>

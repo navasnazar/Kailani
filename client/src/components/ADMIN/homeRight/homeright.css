@@ -13,7 +13,6 @@
 .item_container1{
     background-color: var(--color-white);
     width: 378px;
-    height: 20vh;
     color: var(--color-bg);
     text-align: center;
     display: flex;
