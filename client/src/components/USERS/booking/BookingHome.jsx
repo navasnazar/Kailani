@@ -56,9 +56,9 @@ const BookingHome = () => {
                             <div className='imageBox'>
                                 <img src={image} alt=""/> 
                             </div>
-                            <div className="flex">
-                            <h3>{title}</h3>
-                            <a href={link} className="btn">{linkTitle}</a>
+                            <div className="heading_div">
+                                <h3 className='heading_image'>{title}</h3>
+                                <a href={link} className="btn heading_image">{linkTitle}</a>
                             </div>
                         </SwiperSlide>
                         )

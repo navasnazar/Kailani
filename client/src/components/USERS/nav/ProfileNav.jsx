@@ -1,6 +1,6 @@
 import React from 'react'
 import './nav.css'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 
 import {AiOutlineHome, AiOutlineUser} from 'react-icons/ai'
 import {RiServiceLine} from 'react-icons/ri'
@@ -17,21 +17,14 @@ const ProfileNav = () => {
 
   return (
     <nav>
-      <Link to="/" >
-          <AiOutlineHome/>
-      </Link>
-      
-      {/* <a href="#about" 
-        onClick={()=>setActiveNav('#about')} 
-        className={activeNav === '#about' ? 'active' : ''}>
-        <AiOutlineUser/>
-      </a> */}
+      <Link to='/' ><AiOutlineHome/></Link>
+     
 
-      <a href={activeNav}
+      <Link to='/profile'
         // onClick={()=>setActiveNav('/gallery')}
         className={activeNav === 'profile' ? 'active' : ''}>
         <AiOutlineUser/>
-      </a>
+      </Link>
 
       <Link to='/booking'>
         <FiGrid/>

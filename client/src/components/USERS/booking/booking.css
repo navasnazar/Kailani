@@ -11,9 +11,9 @@
 
 .box img{
     border-radius: 1.5rem;
-    height: 70vh;
     width: 100%;
     object-fit: cover;
+    height: auto;
 }
 
 .box .flex{
@@ -26,10 +26,23 @@
 }
 
 .box .flex h3{
-    font-size: 2rem;
+    font-size: 23px;
     color: var(--color-white);
     text-transform: capitalize;
     text-align: center;
+    justify-content: space-between;
+}
+.heading_image{
+    width: auto;
+    padding: 0.5rem !important;
+    text-transform: capitalize;
+}
+.heading_div{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    align-items: center;
+    padding-bottom: 6rem;
 }
 
 /* =======availability section start======= */
@@ -41,7 +54,7 @@
     padding: 0 6rem;
  }
  
- .availability form .flex .box{
+ .availability .box{
     flex: .5 1 10rem;
  }
  

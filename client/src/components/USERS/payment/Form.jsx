@@ -3,31 +3,67 @@ import './form.css'
 import {TfiEmail} from 'react-icons/tfi'
 import {RiMessengerLine} from 'react-icons/ri'
 import {MdDriveFileRenameOutline} from 'react-icons/md'
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import emailjs from 'emailjs-com'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-
-  
 
 const FormDetails = () => {
   const [data, setData] = useState({})
+  const [render, setRender]=useState(0)
+  const [formData, setFormData]=useState({})
 
-    const updateData = e => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
+  const user = useSelector((state)=>state.user.loginUserDetails)
+
+
+  useEffect(()=>{
+      getForms();
+  },[render])
+  
+  const getForms = ()=>{
+        return new Promise(async(resolve, reject)=>{
+          const response = await axios.post('http://localhost:8000/getform', user).then((resp)=>{
+            console.log('form',resp.data.data);
+            let formDatas = resp.data.data
+            setFormData(formDatas)
+            resolve()
         })
+      })
+  }
+  
+
+  const updateData = e => {
+      setData({
+          ...data,
+          [e.target.name]: e.target.value
+      })
     }
   
     
   const form = useRef();
 
-  const sendEmail = (e) => {
+  const sendEmail = async(e) => {
     e.preventDefault();
-
     console.log(data);
-    
+    const response = await axios.patch('http://localhost:8000/form', {data:data, user:user}).then((resp)=>{
+        console.log(resp);
+        let x = Math.random()
+        setRender(x)
+        toast.success('Submitted Success!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+    })
   };
 
 
@@ -36,28 +72,71 @@ const FormDetails = () => {
 
   return (
     <section id='form'>
-      <h5>Fill your Details</h5>
-      <h2>Form</h2>
-
+      <h5>Form</h5>
+      <h2>Full your Info.</h2>
+      <ToastContainer/>
       <div className='container form__container'>
         
         <form ref={form} onSubmit={sendEmail} >
           
           <div className='form_div'>
-            <input onChange={updateData} type="text" name='name' placeholder='Full Name' required/>
-            <input onChange={updateData} type="email" name='email' placeholder='Email ID' required/>
-            <input onChange={updateData} type="number" name='mobile' placeholder='Mobile Number' required/>
-          
-            <input onChange={updateData} type="text" name='address' placeholder='Address' required/>
-            <input onChange={updateData} type="text" name='city' placeholder='City' required/>
-            <input onChange={updateData} type="text" name='state' placeholder='State' required/>
-          
-            <input onChange={updateData} type="text" name='country' placeholder='Country' required/>
-            <input onChange={updateData} type="text" name='zipcode' maxLength='6' placeholder='Zip Code' required/>
-            <input onChange={updateData} type="text" name='phone' placeholder='Phone' required/>
+            {formData ?
+            <input onChange={updateData} type="text" name='name' placeholder='Enter your Full Name'  defaultValue={formData.name} required/>
+            :
+            <input onChange={updateData} type="text" name='name'  placeholder='Enter your Full Name' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='email' placeholder='Enter your Email ID'  defaultValue={formData.email} required/>
+            :
+            <input onChange={updateData} type="text" name='email'  placeholder='Enter your Email ID' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='mobile' placeholder='Enter your Mobile Number'  defaultValue={formData.mobile} required/>
+            :
+            <input onChange={updateData} type="text" name='mobile'  placeholder='Enter your Mobile Number' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='address' placeholder='Enter your Address' defaultValue={formData.address} required/>
+            :
+            <input onChange={updateData} type="text" name='address'  placeholder='Enter your Address' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='city' placeholder='Enter your City' defaultValue={formData.city} required/>
+            :
+            <input onChange={updateData} type="text" name='city'  placeholder='Enter your City' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='state' placeholder='Enter your State' defaultValue={formData.state} required/>
+            :
+            <input onChange={updateData} type="text" name='state'  placeholder='Enter your State' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='country' placeholder='Enter your Country' defaultValue={formData.country} required/>
+            :
+            <input onChange={updateData} type="text" name='country'  placeholder='Enter your Country' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='zipcode' placeholder='Enter your Zip Code' defaultValue={formData.zipcode} required/>
+            :
+            <input onChange={updateData} type="text" name='zipcode'  placeholder='Enter your Zip Code' required/>
+            }
+
+            {formData ?
+            <input onChange={updateData} type="text" name='phone' placeholder='Enter your Alternate Mobile' defaultValue={formData.phone} required/>
+            :
+            <input onChange={updateData} type="text" name='phone'  placeholder='Enter your Alternate Mobile' required/>
+            }
+
 
           </div>
-          <textarea name="message"  rows="3" placeholder='Extras_suggestions'></textarea>
+          <textarea onChange={updateData} name="message"  rows="3" placeholder='Extras_suggestions'></textarea>
           <button type='submit' className='btn btn-primary'>Submit</button>
         </form>
       </div>

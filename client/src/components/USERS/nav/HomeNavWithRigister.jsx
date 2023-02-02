@@ -12,6 +12,10 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import jwt from 'jwt-decode'
 import {useDispatch} from 'react-redux'
 import {getUserLoginDetails} from '../../../redux/userReducer'
+import {useSelector} from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 //Registration details
 import {
@@ -40,6 +44,7 @@ const HomeNav = () => {
   const [loginErr, setLoginErr]=useState('')
   
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.loginUserDetails.userID);
 
 
   console.log(activeNav);
@@ -103,6 +108,16 @@ const HomeNav = () => {
       if(resData.status=='done'){
         setVisible(false);
         setLoginVisible(true)
+        toast.success('Register Success!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
     })
   };
@@ -274,6 +289,16 @@ const HomeNav = () => {
         setVisible(false);
         setLoginVisible(false)
         setNavActive(true)
+        toast.success('Login Success!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         
       }
     })
@@ -301,23 +326,28 @@ const HomeNav = () => {
                 </a>
                 
                 <div>
-                <Button className='registerButton'
+                  
+                    {userId ? 
+                    <Link to="/profile"><AiOutlineUser/></Link> :
+                      <div>
+                        <Button className='registerButton'
                         type=''
-                        onClick={() => {
-                          setVisible(true);
-                        }}
-                      >
-                  <AiOutlineUser/>
-                        
-                    </Button>
-                      <CollectionCreateForm
-                      className='formReg'
-                        visible={visible}
-                        onCreate={onCreate}
-                        onCancel={() => {
-                          setVisible(false);
-                        }}
-                      />
+                          onClick={() => {
+                            setVisible(true);
+                          }}
+                        >
+                          <AiOutlineUser/>
+                        </Button>
+                          <CollectionCreateForm
+                            className='formReg'
+                            visible={visible}
+                            onCreate={onCreate}
+                            onCancel={() => {
+                              setVisible(false);
+                            }}
+                          />
+                      </div>
+                    }
                 </div>
 
                 <a href="#services"

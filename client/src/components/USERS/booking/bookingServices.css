@@ -14,7 +14,7 @@
     width:  100%;
     aspect-ratio: 1.6/1;
     border-radius: 2rem;
-    display: grid;
+    display: flex;
     place-items: center;
 }
 
@@ -23,6 +23,9 @@
     overflow: hidden;
     transform: rotate(0deg);
     transition: var(--transition);
+    max-width: 100%;
+    height: auto;
+   
 }
 
 .bservices__pic-image:hover{
@@ -45,6 +48,7 @@
 
 .btnClass{
     display: flex;
+    justify-content: end;
 }
 .bservices__btn-proceed{
     width: 15rem;
@@ -54,6 +58,11 @@
     margin-right: 4rem;
     text-align: center;
 }
+.validation_select{
+    color: red;
+    font-style: italic;
+}
+
 /* =========== MEDIA QUERIES (MEDIUM DEVICES)========== */
 
 @media screen and (max-width:1024px) {

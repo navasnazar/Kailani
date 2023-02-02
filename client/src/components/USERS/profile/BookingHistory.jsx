@@ -1,39 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import {useSelector} from 'react-redux'
 import './bookingHistory.css'
-import Table from 'react-bootstrap/Table';
+import axios from 'axios'
+
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBBtn,
+  MDBBreadcrumb,
+  MDBBreadcrumbItem,
+  MDBProgress,
+  MDBProgressBar,
+  MDBIcon,
+  MDBListGroup,
+  MDBListGroupItem
+} from 'mdb-react-ui-kit';
 
 const BookingHistory = () => {
   return (
     <div>
-        <Table striped bordered hover variant="dark">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </Table>
+        <section style={{ backgroundColor: 'black' }}>
+        <MDBContainer className="py-5">
+          
+
+          <MDBRow>
+            <MDBCol lg="8">
+              <MDBCard className="mb-4">
+                <MDBCardBody>
+                  <MDBRow>
+                    <MDBCol sm="3">
+                      <MDBCardText>Full Name</MDBCardText>
+                    </MDBCol>
+                    <MDBCol sm="9">
+                      <MDBCardText className="text-muted">CVVV</MDBCardText>
+                    </MDBCol>
+                  </MDBRow>
+                  <hr />
+                  <MDBRow>
+                    <MDBCol sm="3">
+                      <MDBCardText>Email</MDBCardText>
+                    </MDBCol>
+                    <MDBCol sm="9">
+                      <MDBCardText className="text-muted">FFFF</MDBCardText>
+                    </MDBCol>
+                  </MDBRow>
+                  <hr />
+                  <MDBRow>
+                    <MDBCol sm="3">
+                      <MDBCardText>Mobile</MDBCardText>
+                    </MDBCol>
+                    <MDBCol sm="9">
+                      <MDBCardText className="text-muted">(+91) DDD</MDBCardText>
+                    </MDBCol>
+                  </MDBRow>
+                  <hr />
+                  
+                  <MDBRow>
+                    <MDBCol sm="3">
+                      <MDBCardText>Address</MDBCardText>
+                    </MDBCol>
+                    <MDBCol sm="9">
+                      <MDBCardText className="text-muted"> </MDBCardText>
+                    </MDBCol>
+                  </MDBRow>
+                </MDBCardBody>
+                
+              </MDBCard>
+            </MDBCol>
+            <BookingHistory/>
+
+          </MDBRow>
+        </MDBContainer>
+    </section>
     </div>
   )
 }

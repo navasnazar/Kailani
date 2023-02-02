@@ -1,10 +1,14 @@
 import React from 'react'
 import './logout.css'
 import {RiLogoutCircleRLine} from 'react-icons/ri'
-import {getUserLoginDetails} from '../../../redux/userReducer'
+import {getUserLoginDetails, getAvailableDate} from '../../../redux/userReducer'
 import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const Logout = () => {
 
@@ -26,12 +30,25 @@ const Logout = () => {
     const logoutFunction = ()=>{
         console.log('logout clicked');
         localStorage.removeItem('userToken')
+        toast.success('Logout Success!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         dispatch(getUserLoginDetails(false))
+        dispatch(getAvailableDate(false))
         setLogout(false)
+        
       }
 
   return (
     <div>
+        <ToastContainer/>
         {
             user ?
             <div className='sticky_logout'>
