@@ -6,33 +6,45 @@ import Testimonials from '../../components/USERS/testimonials/Testimonials'
 import Contact from '../../components/USERS/contact/Contact'
 import HomeNav from '../../components/USERS/nav/HomeNavWithRigister'
 import Footer from '../../components/USERS/footer/Footer'
-import jwt from 'jwt-decode'
-import {useDispatch} from 'react-redux'
-import {getUserLoginDetails} from '../../redux/userReducer'
 import Logout from '../../components/USERS/logout/Logout'
 import { FaBullseye } from 'react-icons/fa'
+import { ToastContainer, toast } from 'react-toastify';
+import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 
 const Home = () => {
   const [reload, setReload]=useState(FaBullseye)
 
+  const user = useSelector((state)=>state.user.loginUserDetails)
+  const token = localStorage.getItem('userToken')
+
 
   useEffect(() => {
-    console.log('home reload');
-    const token = localStorage.getItem('userToken')
     if(token){
-     
       setReload(true)
-
-      // if (user) {
-      //   navigate('/');
-      // } else {
-      //   navigate('/userLogin');
-      // }
+    }else{
+      bookingErr()
     }
-    // else {
-      // navigate('/userLogin');
-    // }
   }, [reload])
+
+  const bookingErr = ()=>{
+    toast.error('Please Login First', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    })
+    return(
+      <>
+        <ToastContainer/>
+      </>
+    )
+  }
 
   
   return (

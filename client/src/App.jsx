@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css'
 import HomePage from './Pages/user/Home';
-import Rooms from './Pages/user/Rooms';
 import Gallery from './Pages/user/Gallery';
 import Booking from './Pages/user/Booking';
 import Register from './Pages/user/Register'
@@ -17,8 +16,12 @@ import UserProfile from './Pages/user/Profile'
 import FinaleInvoice from './Pages/user/FinalInvoice'
 import PreBookingInv from './Pages/user/PreBookingInv'
 import PreBookingInvAdmin from './Pages/admin/PreBookingInvAdmin'
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 const App = () => {
+
+  const user = useSelector((state)=>state.user.loginUserDetails)
 
   return (
     <>
@@ -26,14 +29,13 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<HomePage/>} />
-            <Route exact path="/rooms" element={<Rooms/>} />
             <Route exact path="/gallery" element={<Gallery/>} />
-            <Route exact path="/booking" element={<Booking/>} />
+            <Route path="/booking" element={user ? <Booking/> : <Navigate to='/'/>} />
             <Route exact path="/register" element={<Register/>} />
-            <Route exact path="/proceed" element={<Payment/>} />
-            <Route exact path="/profile" element={<UserProfile/>} />
-            <Route exact path="/invoice" element={<FinaleInvoice/>} />
-            <Route exact path="/PreInvoice" element={<PreBookingInv/>} />
+            <Route path="/proceed" element={user ? <Payment/> : <Navigate to='/'/>} />
+            <Route path="/profile" element={user ? <UserProfile/> : <Navigate to='/'/>} />
+            <Route path="/invoice" element={user ? <FinaleInvoice/> : <Navigate to='/'/>} />
+            <Route path="/PreInvoice" element={user ? <PreBookingInv/> : <Navigate to='/'/>} />
           </Routes>
   
           <Routes>
