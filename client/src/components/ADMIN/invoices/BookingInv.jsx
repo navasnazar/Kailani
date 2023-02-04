@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react'
 import { Col, Divider, Row, Table } from 'antd'
-import './invoiceFirst.css'
-import axios from 'axios'
+import './bookingInv.css'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import moment from "moment";
 import {FcPrint} from 'react-icons/fc'
-import {axiosUserInstance} from '../../../Instance/Axios'
+import {axiosAdminInstance} from '../../../Instance/Axios'
 
-const PreBooking = () => {
+
+const PreBookingInvAdmin = () => {
 
     const navigate = useNavigate();
-    const invoiceID = useSelector((state)=>state.user.preBookingInvoice)
+    const invoiceID = useSelector((state)=>state.admin.preBookingInvoiceAdmin)
     
     const [bookingData, setBookingData]=useState({})
     const [form, setForm]=useState({})
@@ -25,12 +25,7 @@ const PreBooking = () => {
     }, [])
     
     const getInvoice = async()=>{
-        const token = localStorage.getItem('userToken')
-        const response = await axiosUserInstance.post('/getInvoice',{invoiceID},
-        {
-            headers: {Authorization: token}
-        }
-        ).then((resp)=>{
+        const response = await axiosAdminInstance.post('/getInvoice',{invoiceID}).then((resp)=>{
             console.log(resp);
             if(resp.data.status=='err'){
                 navigate('/')
@@ -162,4 +157,4 @@ const PreBooking = () => {
   )
 }
 
-export default PreBooking
+export default PreBookingInvAdmin

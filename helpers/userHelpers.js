@@ -7,6 +7,18 @@ const CartDB = require('../models/userModel/userCartSchema')
 const FormDB = require('../models/userModel/userFormSchema')
 const BookingDB = require('../models/userModel/BookingSchema')
 
+const {
+    REFRESH_TOKEN_SECRET,
+    ACCESS_TOKEN_SECRET,
+    ACTIVATION_TOKEN_SECRET,
+    CLIENT_URL,
+    SECRET_TOKEN_USER
+} = process.env
+
+const createAccessToken = (payload)=>{
+    return jwt.sign(payload,SECRET_TOKEN_USER,{expiresIn:'1d'})
+}
+
 module.exports={
     findServices:((data)=>{
         return new Promise(async(resolve, reject)=>{
@@ -70,7 +82,7 @@ module.exports={
                             if(status){
                                 console.log('login success')
                                 validation.done=true
-                                const token = jwt.sign({user:userDetails.email, userID:userDetails._id},"secret111")
+                                const token = createAccessToken({user:userDetails.email, userID:userDetails._id});
                                 console.log('token:',token);
                                 resolve([validation,token])
                             }else{
@@ -365,7 +377,6 @@ module.exports={
     getServices:(userId)=>{
         return new Promise(async(resolve, reject)=>{
            let data = await BookingDB.find({userId:userId})
-           console.log(data);
            if(data[0].userId){
                 resolve(data)
            }else{

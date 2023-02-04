@@ -2,13 +2,12 @@ import React from 'react'
 import './booking.css'
 import { useRef } from 'react';
 import { useState, useEffect } from 'react';
-import axios from 'axios'
 import './bookingServices.css'
 import {getAvailableDate} from '../../../redux/userReducer'
 import {useDispatch} from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
+import {axiosUserInstance} from '../../../Instance/Axios'
 
 
 const BookingAvailability = () => {
@@ -31,7 +30,7 @@ const BookingAvailability = () => {
     const [render, setRender]=useState(0)
     const [buttonShow, setButtonShow]=useState(true)
 
-
+    
 
     useEffect(() => {
         getCart();
@@ -42,7 +41,12 @@ const BookingAvailability = () => {
 
     const getCart = ()=>{
         return new Promise(async(resolve, reject)=>{
-            await axios.get(`http://localhost:8000/getUserCart/${userId}`).then((resp)=>{
+            const token = localStorage.getItem('userToken')
+            await axiosUserInstance.get(`/getUserCart/${userId}`,
+            {
+                headers: {Authorization: token}
+            }
+            ).then((resp)=>{
                 if(resp.data.status=='done'){
                     setUserCart(resp.data.data.services)
                     resolve()
@@ -66,9 +70,14 @@ const BookingAvailability = () => {
     const form = useRef();
 
     const handleSubmitForm = async (e)=>{
+        const token = localStorage.getItem('userToken')
         e.preventDefault();
         dispatch(getAvailableDate(availableData))
-        const response = await axios.post('http://localhost:8000/get_available_services',availableData).then((res)=>{
+        const response = await axiosUserInstance.post('/get_available_services',availableData, 
+        {
+            headers: {Authorization: token}
+        }
+        ).then((res)=>{
             let resData = res.data.data
             setData(resData)
             setProceed(true)
@@ -76,18 +85,28 @@ const BookingAvailability = () => {
     }
 
     const selectService = async (data)=>{
+        const token = localStorage.getItem('userToken')
         setSelectedData(true)
         console.log('service id: ',selectedData);
-        const response = await axios.post('http://localhost:8000/addtoCart',{user: user, id: data, bookingDetails: availableData}).then((resp)=>{
+        const response = await axiosUserInstance.post('/addtoCart',{user: user, id: data, bookingDetails: availableData}, 
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             let xxx = Math.random()
             console.log('bbbbb',xxx); 
             setRender(xxx)
         })
     }
     const selectRMService = async (data)=>{
+        const token = localStorage.getItem('userToken')
         console.log('service id: ',data);
         setSelectedData(false)
-        const response = await axios.post('http://localhost:8000/removetoCart',{user: user, id: data, bookingDetails: availableData}).then((resp)=>{
+        const response = await axiosUserInstance.post('/removetoCart',{user: user, id: data, bookingDetails: availableData},
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             let xxx = Math.random()
             console.log('bbbbb',xxx);    
             setRender(xxx)
@@ -96,7 +115,12 @@ const BookingAvailability = () => {
     }
 
     const dateSubmition = async ()=>{
-        const response = await axios.post('http://localhost:8000/dateConfirm',{user: user, bookingDetails: availableData}).then((resp)=>{
+        const token = localStorage.getItem('userToken')
+        const response = await axiosUserInstance.post('/dateConfirm',{user: user, bookingDetails: availableData},
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
            
             if(resp.data.status=='done'){
                 setProceedErr('')
@@ -109,7 +133,6 @@ const BookingAvailability = () => {
     }
 
     const buttonChange = async(id)=>{
-        console.log('ididididid : ', id);
         try{
             let x = await userCart.find(element => element.serviceID = id)
             if(x.serviceID==id){
@@ -124,7 +147,6 @@ const BookingAvailability = () => {
             console.log(err);
         }
     }
-    console.log('xxxx',buttonShow);
 
 
   return (
@@ -176,7 +198,6 @@ const BookingAvailability = () => {
                     </div>
                 </div>
                 <button type='submit' className='btn btn-primary'>Check Availability</button>
-                {/* <input type="submit" value="check availability" name="check" className="btn"/> */}
             </form>
         </section>
         {

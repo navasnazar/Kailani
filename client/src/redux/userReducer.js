@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     availabeDate: '',
     bookingID: '',
     preBookingInvoice: '',
+
 }
 
 const userSlice = createSlice({
@@ -26,7 +27,7 @@ const userSlice = createSlice({
         getPreBookingInvoice:(state, action)=>{
             const preBookingInvoice = action.payload;
             return {...state,preBookingInvoice}
-        }
+        },
     }
 })
 
@@ -34,7 +35,7 @@ export const {
     getUserLoginDetails,
     getAvailableDate,
     getBookingID,
-    getPreBookingInvoice
+    getPreBookingInvoice,
 } = userSlice.actions
 
 export default userSlice.reducer;

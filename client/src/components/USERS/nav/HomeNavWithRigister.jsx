@@ -7,7 +7,6 @@ import {TiMessages} from 'react-icons/ti'
 import {TfiGallery} from 'react-icons/tfi'
 import { useState } from 'react'
 import {FiGrid} from 'react-icons/fi'
-import axios from 'axios'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import jwt from 'jwt-decode'
 import {useDispatch} from 'react-redux'
@@ -15,7 +14,7 @@ import {getUserLoginDetails} from '../../../redux/userReducer'
 import {useSelector} from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import {axiosUserInstance} from '../../../Instance/Axios'
 
 //Registration details
 import {
@@ -99,7 +98,7 @@ const HomeNav = () => {
 // register call start -------------------->
   const onCreate = async (values) => {
     console.log('Received values of form yyyy: ', values);
-    const response = await axios.post('http://localhost:8000/signup',values).then((res)=>{
+    const response = await axiosUserInstance.post('/signup',values).then((res)=>{
       let resData = res.data
       console.log(resData);
       if(resData.status=='err'){
@@ -276,7 +275,7 @@ const HomeNav = () => {
 // login start -------------------->
   const onFinish = async (values) => {
     console.log('Received values of form: ', values);
-    const response = await axios.post('http://localhost:8000/login',values).then((res)=>{
+    const response = await axiosUserInstance.post('/login',values).then((res)=>{
       let resData = res.data
       console.log(resData);
       if(resData.status=='err'){

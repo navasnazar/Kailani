@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const e = require('express');
 const bcrypt = require('bcrypt')
 const objectId=require('mongodb').ObjectId
-
+const BookingDB = require('../models/userModel/BookingSchema')
 
 module.exports={
     login:(data)=>{
@@ -68,7 +68,6 @@ module.exports={
                 img2_url: data.img2_url,
                 img3_url: data.img3_url,
                 img4_url: data.img4_url,
-
             })
             new_service.save().then((response)=>{
                 resolve(response)
@@ -98,6 +97,122 @@ module.exports={
             }).catch((e)=>{
                 console.log(e);
             })
+        })
+    },
+    getBooking:()=>{
+        return new Promise(async(resolve, reject)=>{
+            await BookingDB.find().then((response)=>{
+                resolve(response)
+            }).catch((err)=>{
+                console.log(err);
+            })
+        })
+    },getBookingDatas:(bookingID)=>{
+        return new Promise(async(resolve, reject)=>{
+            await BookingDB.findOne({_id:bookingID}).then((data)=>{
+                resolve(data)
+            }).catch((err)=>{
+                console.log(err);
+            })
+        })
+    },
+    ChangeBookingStatus:(id)=>{
+        return new Promise(async(resolve, reject)=>{
+            await BookingDB.findOne({_id:id}).then((data)=>{
+                if(data.booking_status=='Pending'){
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            booking_status: 'Approved',
+                            conform_booking: true
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }
+                if(data.booking_status=='Approved'){
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            booking_status: 'Pending',
+                            conform_booking: false
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }
+            })
+        })
+    },
+    ChangeCheckInStatus:(id)=>{
+        return new Promise(async(resolve, reject)=>{
+            await BookingDB.findOne({_id:id}).then((data)=>{
+                if(data.conform_check_in){
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            conform_check_in: false,
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }else{
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            conform_check_in: true,
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }
+            })
+        })
+    },
+    ChangeCheckOutStatus:(id)=>{
+        return new Promise(async(resolve, reject)=>{
+            await BookingDB.findOne({_id:id}).then((data)=>{
+                if(data.conform_check_out){
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            conform_check_out: false,
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }else{
+                    const response = BookingDB.updateOne({_id:id}, 
+                        {$set:{
+                            conform_check_out: true,
+                        }
+                    }).then((response)=>{
+                        resolve(response)
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                }
+            })
+        })
+    },
+    DeleteBookingDet:(id)=>{
+        let validation = {done:false, err:false}
+        return new Promise(async(resolve, reject)=>{
+            let data = await BookingDB.findOne({_id:id})
+            if(data.booking_status=='Approved'){
+                validation.err=true
+                resolve(validation)
+            }else{
+                BookingDB.remove({_id:id}).then((resp)=>{
+                    validation.done=true
+                    resolve(validation)
+                })
+            }
         })
     }
 }

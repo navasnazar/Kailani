@@ -1,7 +1,6 @@
 import React from "react";
 import './bookingDetails.css'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import {
   MDBBtn,
   MDBCard,
@@ -22,6 +21,9 @@ import moment from "moment";
 import { useNavigate } from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {getBookingID} from '../../../redux/userReducer'
+import {axiosUserInstance} from '../../../Instance/Axios'
+
+
 
 export default function ProductCards() {
 
@@ -50,7 +52,12 @@ export default function ProductCards() {
 
     const getServices = ()=>{
         return new Promise(async(resolve, reject)=>{
-            const response = await axios.post('http://localhost:8000/carts', user).then((data)=>{
+            const token = localStorage.getItem('userToken')
+            const response = await axiosUserInstance.post('/carts', user, 
+            {
+                headers: {Authorization: token}
+            }
+            ).then((data)=>{
                 if(data.data.status=='done'){
                     let userCartsFullDetails = data.data.data
                     let serviceData = data.data.services
@@ -69,25 +76,37 @@ export default function ProductCards() {
     }
 
     const qtyDecrementFun = async(data)=>{
-        const response = await axios.post('http://localhost:8000/cartDecQty', {data, user}).then((resp)=>{
+        const token = localStorage.getItem('userToken')
+        const response = await axiosUserInstance.post('/cartDecQty', {data, user}, 
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             let x = Math.random() * 100;
             setRender(x)
         })
     }
     const qtyIncrementFun = async(data)=>{
-        const response = await axios.post('http://localhost:8000/cartIncQty', {data, user}).then((resp)=>{
+        const token = localStorage.getItem('userToken')
+        const response = await axiosUserInstance.post('/cartIncQty', {data, user}, 
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             let x = Math.random() * 100;
             setRender(x)
         })
     }
 
-    
-    
-    
 
     const handleSubmitForm =async (e)=>{
         e.preventDefault();
-        const response = await axios.post('http://localhost:8000/confirmBooking', {cartData, user, finalAmount}).then((resp)=>{
+        const token = localStorage.getItem('userToken')
+        const response = await axiosUserInstance.post('/confirmBooking', {cartData, user, finalAmount},
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             console.log(resp);
             if(resp.data.status=='err'){
                 setFormErr(resp.data.data)
@@ -196,5 +215,5 @@ export default function ProductCards() {
                         </MDBContainer>
                         </form>
         </section>
-        );
+    );
 }

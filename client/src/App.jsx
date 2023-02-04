@@ -16,6 +16,7 @@ import Payment from './Pages/user/Payment'
 import UserProfile from './Pages/user/Profile'
 import FinaleInvoice from './Pages/user/FinalInvoice'
 import PreBookingInv from './Pages/user/PreBookingInv'
+import PreBookingInvAdmin from './Pages/admin/PreBookingInvAdmin'
 
 const App = () => {
 
@@ -35,14 +36,14 @@ const App = () => {
             <Route exact path="/PreInvoice" element={<PreBookingInv/>} />
           </Routes>
   
-        <Routes>
+          <Routes>
             <Route exact path="/admin/login" element={<AdminLogin/>} />
             <Route exact path="/admin" element={<AdminHome/>} />
             <Route exact path="/admin/resetpass/:token" element={<ResetPassword/>} />
             <Route exact path="/admin/users" element={<AdminUsers/>} />
             <Route exact path="/admin/booking" element={<AdminBooking/>} />
             <Route exact path="/admin/services" element={<AdminServices/>} />
-
+            <Route exact path="/admin/PreInvoice" element={<PreBookingInvAdmin/>} />
           </Routes>
         </BrowserRouter>
       </div>

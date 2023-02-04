@@ -12,6 +12,13 @@ router.get('/services', adminController.getServices)
 router.post('/addServices', adminController.addService)
 router.post('/editServices', adminController.editService)
 router.post('/delServices',adminController.delService) 
+router.get('/getAllBooking', adminController.getAllBooking)
+router.post('/getInvoice', adminController.getInvoices)
+router.post('/statusChange', adminController.StatusChange)
+router.post('/CheckInChange', adminController.CheckInChange)
+router.post('/CheckOutChange', adminController.CheckOutChange)
+
+router.post('/bookingDelete', adminController.DeleteBooking)
 
 
 module.exports = router;        

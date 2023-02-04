@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { Col, Divider, Row, Table } from 'antd'
 import './invoiceFirst.css'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import moment from "moment";
 import {FcPrint} from 'react-icons/fc'
-
+import {axiosUserInstance} from '../../../Instance/Axios'
 
 const InvoiceFirst = () => {
 
@@ -26,7 +25,12 @@ const InvoiceFirst = () => {
     }, [])
     
     const getInvoice = async()=>{
-        const response = await axios.post('http://localhost:8000/getInvoice',{invoiceID}).then((resp)=>{
+        const token = localStorage.getItem('userToken')
+        const response = await axiosUserInstance.post('/getInvoice',{invoiceID},
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             console.log(resp);
             if(resp.data.status=='err'){
                 navigate('/')

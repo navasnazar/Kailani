@@ -1,15 +1,10 @@
 import React from 'react'
 import './form.css'
-import {TfiEmail} from 'react-icons/tfi'
-import {RiMessengerLine} from 'react-icons/ri'
-import {MdDriveFileRenameOutline} from 'react-icons/md'
 import { useRef, useState, useEffect } from 'react';
-import emailjs from 'emailjs-com'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import {axiosUserInstance} from '../../../Instance/Axios'
 
 
 const FormDetails = () => {
@@ -26,7 +21,12 @@ const FormDetails = () => {
   
   const getForms = ()=>{
         return new Promise(async(resolve, reject)=>{
-          const response = await axios.post('http://localhost:8000/getform', user).then((resp)=>{
+          const token = localStorage.getItem('userToken')
+          const response = await axiosUserInstance.post('/getform', user, 
+          {
+            headers: {Authorization: token}
+          }
+          ).then((resp)=>{
             console.log('form',resp.data.data);
             let formDatas = resp.data.data
             setFormData(formDatas)
@@ -48,8 +48,9 @@ const FormDetails = () => {
 
   const sendEmail = async(e) => {
     e.preventDefault();
+    const token = localStorage.getItem('userToken')
     console.log(data);
-    const response = await axios.patch('http://localhost:8000/form', {data:data, user:user}).then((resp)=>{
+    const response = await axiosUserInstance.patch('/form', {data:data, user:user}).then((resp)=>{
         console.log(resp);
         let x = Math.random()
         setRender(x)

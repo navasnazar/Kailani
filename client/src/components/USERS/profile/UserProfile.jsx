@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './userProfile.css'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
-import axios from 'axios'
+import {axiosUserInstance} from '../../../Instance/Axios'
 import {FaFileInvoice} from 'react-icons/fa'
 import {
   MDBCol,
@@ -47,17 +47,28 @@ export default function ProfilePage() {
   }, [])
   
   const profileCall= async ()=>{
-    const response = await axios.get(`http://localhost:8000/getUserDetails/${userId}`).then((resp)=>{
+    const token = localStorage.getItem('userToken')
+    const response = await axiosUserInstance.get(`/getUserDetails/${userId}`,
+    {
+      headers: {Authorization: token}
+    }
+    ).then((resp)=>{
       let userDetails =  resp.data.data 
       setUserDet(userDetails)
     })
   }
 
   const getBookedServices = async ()=>{
-    const response = await axios.get(`http://localhost:8000/getServiceDetails/${userId}`).then((resp)=>{
+    const token = localStorage.getItem('userToken')
+    const response = await axiosUserInstance.get(`/getServiceDetails/${userId}`,
+    {
+      headers: {Authorization: token}
+    }
+    ).then((resp)=>{
       if(resp.data.status=='done'){
         let services =  resp.data.data 
-        setServiceData(services)
+
+        setServiceData(services.reverse())
       }
       if(resp.data.status=='err'){
         setDataErr('No Services Booking')

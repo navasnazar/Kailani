@@ -75,7 +75,6 @@ module.exports={
     addService:(async(req, res)=>{
         let serviceData = req.body
         console.log("service: ",serviceData);
-
         adminHelpers.addNewService(serviceData).then((response)=>{
             res.json({status:'done', id:serviceData._id})
         })
@@ -92,6 +91,55 @@ module.exports={
         console.log("Deleted Data: ",deletedData);
         adminHelpers.deleteService(deletedData).then((response)=>{
             res.json({status:'done', id:deletedData._id})
+        })
+    }),
+    getAllBooking:(async(req, res)=>{
+        adminHelpers.getBooking().then((response)=>{
+            if(!response){
+                res.json({status:'err', msg:'**Their is No Booking Details Available'})
+            }else{
+                res.json({status:'done', data:response})
+            }
+        })
+    }),
+    getInvoices:((req, res)=>{
+        console.log(req.body);
+        let bookingID = req.body.invoiceID
+        if(!bookingID){
+            res.json({status:'err'})
+        }
+        adminHelpers.getBookingDatas(bookingID).then((data)=>{
+            res.json({status:'done', data:data})
+        })
+    }),
+    StatusChange:((req, res)=>{
+        let id = req.body.id
+        adminHelpers.ChangeBookingStatus(id).then((response)=>{
+            res.json({status:'done'})
+        })
+    }),
+    DeleteBooking:((req, res)=>{
+        console.log(req.body.id);
+        let id = req.body.id
+        adminHelpers.DeleteBookingDet(id).then((response)=>{
+            if(response.err){
+                res.json({status:'err'})
+            }
+            if(response.done){
+                res.json({status:'done'})
+            }
+        })
+    }),
+    CheckInChange:((req, res)=>{
+        let id = req.body.id
+        adminHelpers.ChangeCheckInStatus(id).then((response)=>{
+            res.json({status:'done'})
+        })
+    }),
+    CheckOutChange:((req, res)=>{
+        let id = req.body.id
+        adminHelpers.ChangeCheckOutStatus(id).then((response)=>{
+            res.json({status:'done'})
         })
     })
 } 

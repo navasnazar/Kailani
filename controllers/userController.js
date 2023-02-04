@@ -1,6 +1,7 @@
 const userHelpers = require('../helpers/userHelpers')
 const jwt = require('jsonwebtoken');
 
+
 module.exports={
     getAvailableServices:((req, res)=>{
         const data = req.body
@@ -48,7 +49,7 @@ module.exports={
         })
     }),
     getUserDetails:((req, res)=>{
-        const userId = req.params.id
+        const userId = req.user._id
         userHelpers.userDetails(userId).then((response)=>{
             res.json({status:'done', data:response})
         }).catch((err)=>{
@@ -118,7 +119,7 @@ module.exports={
         })
     }),
     getUserForm:((req, res)=>{
-        let userID = req.body.userID
+        let userID = req.user._id
         userHelpers.getUserFromData(userID).then((response)=>{
             res.json({status:'done', data:response})
         })
@@ -152,7 +153,7 @@ module.exports={
         })
     }),
     getUserServices:((req, res)=>{
-        const userId = req.params.id
+        const userId = req.user._id
         userHelpers.getServices(userId).then((response)=>{
             if(response){
                 res.json({status:'done', data:response})
@@ -162,7 +163,7 @@ module.exports={
         })
     }),
     getUserCart:((req, res)=>{
-        const userId = req.params.id
+        const userId = req.user._id
         userHelpers.getCart(userId).then((response)=>{
             if(response){
                 res.json({status:'done', data:response})
