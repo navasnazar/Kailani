@@ -73,7 +73,7 @@ module.exports={
         })
     }),
     userCart:((req, res)=>{
-        let userID = req.body.userID
+        let userID = req.user._id
         userHelpers.getUserCarts(userID).then((response)=>{
             if(response){
                 let services = response.services
@@ -122,6 +122,21 @@ module.exports={
         let userID = req.user._id
         userHelpers.getUserFromData(userID).then((response)=>{
             res.json({status:'done', data:response})
+        })
+    }),
+    getCart:((req, res)=>{
+        let userID = req.user._id
+        userHelpers.getCartFind(userID).then((response)=>{
+            console.log('serrrr:', response);
+            if(response){
+                if(response.services[0]){
+                    res.json({status:'done', data:response})
+                }else{
+                res.json({status:'err'})
+                }
+            }else{
+                res.json({status:'err'})
+            }
         })
     }),
     bookingConfirm:((req, res)=>{

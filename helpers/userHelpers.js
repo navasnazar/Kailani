@@ -206,6 +206,19 @@ module.exports={
             })
         })
     },
+    getCartFind:(userID)=>{
+        return new Promise(async(resolve, reject)=>{
+            await CartDB.findOne({userId:userID}).then((resp)=>{
+                if(resp){
+                    resolve(resp)
+                }else{
+                    resolve()
+                }
+            }).catch((err)=>{
+                console.log(err);
+            })
+        })
+    },
     userCartQtyDec:(serviceID, userID)=>{
         return new Promise(async(resolve, reject)=>{
            let data =  await CartDB.findOne({userId:userID}, {services:{$elemMatch:{serviceID:serviceID}}})

@@ -22,5 +22,6 @@ router.post('/getInvoice', userAuthentication, userController.getInvoice)
 router.get('/getServiceDetails/:id', userAuthentication, userController.getUserServices)
 router.get('/getUserCart/:id', userAuthentication, userController.getUserCart)
 router.post('/getInvoiceDet/:id', userAuthentication, userController.getInvoiceDetails) 
+router.get('/CartFind', userAuthentication, userController.getCart) 
 
 module.exports = router; 

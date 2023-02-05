@@ -16,8 +16,10 @@ import UserProfile from './Pages/user/Profile'
 import FinaleInvoice from './Pages/user/FinalInvoice'
 import PreBookingInv from './Pages/user/PreBookingInv'
 import PreBookingInvAdmin from './Pages/admin/PreBookingInvAdmin'
+import Err404 from './Pages/Err'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+
 
 const App = () => {
 
@@ -36,6 +38,7 @@ const App = () => {
             <Route path="/profile" element={user ? <UserProfile/> : <Navigate to='/'/>} />
             <Route path="/invoice" element={user ? <FinaleInvoice/> : <Navigate to='/'/>} />
             <Route path="/PreInvoice" element={user ? <PreBookingInv/> : <Navigate to='/'/>} />
+            <Route exact path="/*" element={<Err404/>} />
           </Routes>
   
           <Routes>
