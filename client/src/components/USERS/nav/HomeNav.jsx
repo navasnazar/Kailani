@@ -12,7 +12,6 @@ import {FiGrid} from 'react-icons/fi'
 
 const HomeNav = () => {
   const [activeNav, setActiveNav]=useState('#')
-  console.log(activeNav);
 
 
 

@@ -77,7 +77,6 @@ export default function ProfilePage() {
   }
 
   const getInvoice = async (id)=>{
-    console.log(id);
     dispatch(getPreBookingInvoice(id)) 
     navigate('/PreInvoice')
   }

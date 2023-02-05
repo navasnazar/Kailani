@@ -11,7 +11,6 @@ import {MdPayment} from 'react-icons/md'
 
 const PaymentNav = () => {
     const [activeNav, setActiveNav]=useState('payment')
-    console.log(activeNav);
 
 
   return (

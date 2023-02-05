@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const UserDB = require('../models/userModel/userSchema') 
+const AdminDB = require('../models/adminModel/adminSchema')
 
 const userAuthentication = async (req, res, next) => {
   // verify user is authenticated
@@ -7,9 +7,9 @@ const userAuthentication = async (req, res, next) => {
   
 
   try {
-    const { userID } = jwt.verify(token, process.env.SECRET_TOKEN_USER)
-
-    req.user = await UserDB.findOne({ userID }).select('_id')
+    const { admin } = jwt.verify(token, process.env.SECRET_TOKEN_ADMIN)
+    
+    req.admin = await AdminDB.findOne({ admin }).select('username')
     next()  
 
   } catch (error) {

@@ -21,8 +21,8 @@ const createAccessToken = (payload)=>{
 
 module.exports={
     adminLogin:((req, res)=>{
+        console.log('xxx');
         let data = req.body
-        console.log('hhh:',data);
         adminHelpers.login(data).then((response)=>{
             const [validation, token]=response
             if(validation.done){
@@ -38,7 +38,6 @@ module.exports={
     }),
     passRecover:((req, res)=>{
         let recMail = req.body.reqMail
-        console.log('recovery mail: ', recMail);
         adminHelpers.recoverPassword(recMail).then((data)=>{
             if(data.validation.done){
                 const access_Token = createAccessToken({ id: data.res.id });
@@ -54,7 +53,6 @@ module.exports={
     resetPassword:(async(req, res)=>{
         try {
             const password = req.body.password
-            console.log('PASSSS',password);
             const passwordHash = await bcrypt.hash(password, 12)
 
             await AdminDB.findOneAndUpdate({_id: req.user.id}, {
@@ -74,21 +72,18 @@ module.exports={
     }),
     addService:(async(req, res)=>{
         let serviceData = req.body
-        console.log("service: ",serviceData);
         adminHelpers.addNewService(serviceData).then((response)=>{
             res.json({status:'done', id:serviceData._id})
         })
     }),
     editService:(async(req, res)=>{
         let editedData = req.body
-        console.log("Edited Data: ",editedData);
         adminHelpers.editService(editedData).then((response)=>{
             res.json({status:'done', id:editedData._id})
         })
     }),
     delService:(async(req, res)=>{
         let deletedData = req.body
-        console.log("Deleted Data: ",deletedData);
         adminHelpers.deleteService(deletedData).then((response)=>{
             res.json({status:'done', id:deletedData._id})
         })
@@ -103,7 +98,6 @@ module.exports={
         })
     }),
     getInvoices:((req, res)=>{
-        console.log(req.body);
         let bookingID = req.body.invoiceID
         if(!bookingID){
             res.json({status:'err'})
@@ -119,7 +113,6 @@ module.exports={
         })
     }),
     DeleteBooking:((req, res)=>{
-        console.log(req.body.id);
         let id = req.body.id
         adminHelpers.DeleteBookingDet(id).then((response)=>{
             if(response.err){

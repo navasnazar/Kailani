@@ -25,8 +25,12 @@ const PreBookingInvAdmin = () => {
     }, [])
     
     const getInvoice = async()=>{
-        const response = await axiosAdminInstance.post('/getInvoice',{invoiceID}).then((resp)=>{
-            console.log(resp);
+        const token = localStorage.getItem('admin')
+        const response = await axiosAdminInstance.post('/getInvoice',{invoiceID},
+        {
+            headers: {Authorization: token}
+        }
+        ).then((resp)=>{
             if(resp.data.status=='err'){
                 navigate('/')
             }

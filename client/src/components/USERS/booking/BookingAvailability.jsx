@@ -36,7 +36,6 @@ const BookingAvailability = () => {
         getCart();
     }, [render])
 
-    console.log('RENDER',render);
     
 
     const getCart = ()=>{
@@ -50,9 +49,6 @@ const BookingAvailability = () => {
                 if(resp.data.status=='done'){
                     setUserCart(resp.data.data.services)
                     resolve()
-                }
-                if(resp.data.status=='err'){
-                    console.log('error:', resp);
                 }
             }).catch((err)=>{
                 console.log(err);
@@ -87,20 +83,17 @@ const BookingAvailability = () => {
     const selectService = async (data)=>{
         const token = localStorage.getItem('userToken')
         setSelectedData(true)
-        console.log('service id: ',selectedData);
         const response = await axiosUserInstance.post('/addtoCart',{user: user, id: data, bookingDetails: availableData}, 
         {
             headers: {Authorization: token}
         }
         ).then((resp)=>{
             let xxx = Math.random()
-            console.log('bbbbb',xxx); 
             setRender(xxx)
         })
     }
     const selectRMService = async (data)=>{
         const token = localStorage.getItem('userToken')
-        console.log('service id: ',data);
         setSelectedData(false)
         const response = await axiosUserInstance.post('/removetoCart',{user: user, id: data, bookingDetails: availableData},
         {
@@ -108,7 +101,6 @@ const BookingAvailability = () => {
         }
         ).then((resp)=>{
             let xxx = Math.random()
-            console.log('bbbbb',xxx);    
             setRender(xxx)
 
         })

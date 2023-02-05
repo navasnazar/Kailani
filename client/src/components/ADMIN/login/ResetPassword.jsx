@@ -2,8 +2,8 @@ import React from 'react'
 import './login.css'
 import { useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import {axiosAdminInstance} from '../../../Instance/Axios'
 
 const ResetPassword = () => {
   const {token} = useParams()
@@ -17,13 +17,12 @@ const ResetPassword = () => {
   const handleResetPassSubmit = async (e)=>{
     e.preventDefault();
     let password = {password: pass}
-    let resetPassword = await axios.post('http://localhost:8000/admin/resetpass',password,
+    let resetPassword = await axiosAdminInstance.post('/admin/resetpass',password,
     {
       headers: {Authorization: token}
     }
     ).then((response)=>{
       let data1 = response.data
-      console.log('resetpass response:->',data1);
       if(data1.status==='done'){
         navigate('/admin/login')
       }

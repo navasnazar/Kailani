@@ -27,7 +27,6 @@ const FormDetails = () => {
             headers: {Authorization: token}
           }
           ).then((resp)=>{
-            console.log('form',resp.data.data);
             let formDatas = resp.data.data
             setFormData(formDatas)
             resolve()
@@ -49,9 +48,7 @@ const FormDetails = () => {
   const sendEmail = async(e) => {
     e.preventDefault();
     const token = localStorage.getItem('userToken')
-    console.log(data);
     const response = await axiosUserInstance.patch('/form', {data:data, user:user}).then((resp)=>{
-        console.log(resp);
         let x = Math.random()
         setRender(x)
         toast.success('Submitted Success!', {

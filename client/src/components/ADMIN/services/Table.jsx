@@ -7,7 +7,6 @@ import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import {axiosAdminInstance} from '../../../Instance/Axios'
 import Axioss from 'axios'
-
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Form,
@@ -57,8 +56,13 @@ const Table = () => {
 
 
     const getServices = ()=>{
+      const token = localStorage.getItem('admin')
         return new Promise(async(resolve, reject)=>{
-            const response = await axiosAdminInstance.get('/services').then((data)=>{
+            const response = await axiosAdminInstance.get('/services',
+            {
+              headers: {Authorization: token}
+            }
+            ).then((data)=>{
                 let ServiceData = data.data.allServices
                 setData(ServiceData)
                 resolve()
@@ -86,7 +90,6 @@ const Table = () => {
         {title:'Service', field:'service'},
         {title:'Description', field:'description'},
         {title:'Amount', field:'amount'},
-        // {title:'Image', field:'img1_url'},
     ] 
 
 
@@ -141,19 +144,10 @@ const Table = () => {
           borderRadius: 20 / 2,
         },
       }));
-      
-    //   const handleSubmit= async (e)=>{
-    //     e.preventDefault();
-    //     console.log('haii',data);
-    //     const response = await axiosAdminInstance.patch('/addServices', data).then((status)=>{
-    //         console.log(status);
-    //     })
-    //   }
 
       const handleAddData = async()=>{
         
         const response = await axiosAdminInstance.post('/addServices',uploadImagUrl, {uploadData}).then((status)=>{
-            console.log("add Data: ",status.data);
             const randomNumber = Math.random()* 1000;
             setRender(randomNumber)
             setUploadImgBtn1(true)
@@ -164,18 +158,24 @@ const Table = () => {
       }
 
       const handleEditData = async(data)=>{
-        console.log('Edit data: ',data);
-        const response = await axiosAdminInstance.post('/editServices', data).then((status)=>{
-            console.log("Edited status: ",status.data);
+        const token = localStorage.getItem('admin')
+        const response = await axiosAdminInstance.post('/editServices', data,
+        {
+          headers: {Authorization: token}
+        }
+        ).then((status)=>{
             const randomNumber = Math.random()* 1000;
             setRender(randomNumber)
         })
       }
 
       const handleDeleteData = async(data)=>{
-        console.log('Delete data: ',data);
-        const response = await axiosAdminInstance.post('/delServices', data).then((status)=>{
-            console.log("Delete status: ",status.data);
+        const token = localStorage.getItem('admin')
+        const response = await axiosAdminInstance.post('/delServices', data,
+        {
+          headers: {Authorization: token}
+        }
+        ).then((status)=>{
             const randomNumber = Math.random()* 1000;
             setRender(randomNumber)
         })
@@ -185,61 +185,48 @@ const Table = () => {
 
       const uploadImageFun1 = async (e)=>{
         e.preventDefault();
-        console.log(uploadImg1);
             const formData = new FormData() 
             formData.append("file",uploadImg1[0])   
             formData.append("upload_preset","kailani")
         await Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
             setUploadImgBtn1(false)
-            console.log(response);
             let img1_url = response.data.url
             uploadImagUrl.img1_url = img1_url
-            console.log(uploadImagUrl);
         })
       } 
       const uploadImageFun2 = async (e)=>{
         e.preventDefault();
-        console.log(uploadImg2);
             const formData = new FormData()
             formData.append("file",uploadImg2[0])
             formData.append("upload_preset","kailani")
-            Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
+            await Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
             setUploadImgBtn2(false)
-            console.log(response);
             let img2_url = response.data.url
             uploadImagUrl.img2_url = img2_url
-            console.log(uploadImagUrl);
         })
       } 
-      console.log(uploadImagUrl);
 
       const uploadImageFun3 = async (e)=>{
         e.preventDefault();
-        console.log(uploadImg3);
             const formData = new FormData()
             formData.append("file",uploadImg3[0])
             formData.append("upload_preset","kailani")
-            Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
+            await Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
             setUploadImgBtn3(false)
-            console.log(response);
             let img3_url = response.data.url
             uploadImagUrl.img3_url = img3_url
-            console.log(uploadImagUrl);
         })
       } 
       const uploadImageFun4 = async (e)=>{
         e.preventDefault();
-        console.log(uploadImg4);
             const formData = new FormData()
             formData.append("file",uploadImg4[0])
             formData.append("upload_preset","kailani")
-            Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
+            await Axioss.post('https://api.cloudinary.com/v1_1/djtvhlzt2/image/upload/' , formData).then((response)=>{
             setUploadImgBtn4(false)
             setDataSubmit('')
-            console.log(response);
             let img4_url = response.data.url
             uploadImagUrl.img4_url = img4_url
-            console.log(uploadImagUrl);
             uploadImagUrl.data = uploadData
             handleAddData();
             
@@ -349,23 +336,19 @@ const Table = () => {
                         
                         onRowAdd:(newRow)=>new Promise((resolve, reject)=>{
                             if(newRow.title &&  newRow.service && newRow.description && newRow.amount){
-                                // console.log('data',newRow)
                                 setUploadData(newRow)
                                 setFldValidation('')
                                 setDataSubmit('done')
                             }else{
-                                console.log('empty',newRow)
                                 setFldValidation('** All Field Required')
                             }
                             resolve()
                         }),
                         onRowDelete:selectedRow=>new Promise((resolve, reject)=>{
-                            console.log(selectedRow);
                             handleDeleteData(selectedRow)
                             resolve()
                         }),
                         onRowUpdate:(updatedRow)=>new Promise((resolve, reject)=>{
-                            console.log(updatedRow);
                             handleEditData(updatedRow)
                             resolve()
                         })

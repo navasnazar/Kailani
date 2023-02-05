@@ -19,7 +19,6 @@ function UserDetails1() {
             },
           };
       const response = await axiox.get('http://localhost:3500/admin/allusers',config);
-          // console.log(response)
       setUserDetails(response.data.details);
     }
   }, [userDetails]);

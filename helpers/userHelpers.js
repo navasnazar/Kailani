@@ -39,10 +39,8 @@ module.exports={
         return new Promise(async(resolve, reject)=>{
             userData.password = await bcrypt.hash(userData.password,10),
             await UserDB.findOne({email:userData.email}).then((data)=>{
-                console.log(data);
                 if(data){
                     validation.email=true;
-                    console.log('user already exist');
                     resolve(validation)
                 }else{
                     let new_user = new UserDB({
@@ -69,7 +67,6 @@ module.exports={
             }
         return new Promise(async(resolve, reject)=>{
             await UserDB.findOne({email:loginData.username}).then(async(userDetails)=>{
-                console.log(userDetails);
                 if(!userDetails){
                     validation.notRegister=true
                     resolve([validation])
@@ -80,13 +77,10 @@ module.exports={
                     }else{
                        await bcrypt.compare(loginData.password, userDetails.password).then((status)=>{
                             if(status){
-                                console.log('login success')
                                 validation.done=true
                                 const token = createAccessToken({user:userDetails.email, userID:userDetails._id});
-                                console.log('token:',token);
                                 resolve([validation,token])
                             }else{
-                                console.log('login failed')
                                 validation.passErr=true
                                 resolve([validation])
                             }
@@ -222,7 +216,6 @@ module.exports={
     userCartQtyDec:(serviceID, userID)=>{
         return new Promise(async(resolve, reject)=>{
            let data =  await CartDB.findOne({userId:userID}, {services:{$elemMatch:{serviceID:serviceID}}})
-                console.log('xxxxx: ',data.services[0].qty);
                 let dataQty = data.services[0].qty
                 if(dataQty!=1){
                     CartDB.updateOne({userId:userID, 'services.serviceID':serviceID},
@@ -257,10 +250,8 @@ module.exports={
         })
     },
     userFromData:(user, formData)=>{
-        console.log(user);
         return new Promise(async(resolve, reject)=>{
            let data = await FormDB.findOne({userId:user.userID})
-           console.log(data);
            if(data){
               await FormDB.updateOne({userId:user.userID},
                  {$set:{
@@ -310,7 +301,6 @@ module.exports={
         })
     },
     dateConfirmation:(userId, bookingDetails)=>{
-        console.log(userId);
         let validation = {done:false, err:false}
         let qty =1
         if(!bookingDetails.adults){

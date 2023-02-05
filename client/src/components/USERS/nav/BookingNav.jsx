@@ -29,7 +29,6 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const GalleryNav = () => {
   const [activeNav, setActiveNav]=useState('booking')
-  console.log(activeNav);
 
 
   return (

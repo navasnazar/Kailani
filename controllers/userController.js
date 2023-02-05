@@ -103,7 +103,6 @@ module.exports={
         let bookingDetails = req.body.bookingDetails
         userHelpers.dateConfirmation(userId, bookingDetails).then((response)=>{
             if(response.done){
-                console.log('date fix done');
                 res.json({status:'done'})
             }
             if(response.err){
@@ -127,7 +126,6 @@ module.exports={
     getCart:((req, res)=>{
         let userID = req.user._id
         userHelpers.getCartFind(userID).then((response)=>{
-            console.log('serrrr:', response);
             if(response){
                 if(response.services[0]){
                     res.json({status:'done', data:response})
@@ -143,7 +141,6 @@ module.exports={
         let user = req.body.user
         let bookingDetails = req.body.cartData
         let FinalAmount = req.body.finalAmount
-        console.log(req.body);
         userHelpers.getUserFromData(user.userID).then((form)=>{
             if(form){
                 userHelpers.bookingSubmit(user, bookingDetails, FinalAmount, form).then((response)=>{
@@ -158,7 +155,6 @@ module.exports={
         })
     }),
     getInvoice:((req, res)=>{
-        console.log(req.body);
         let bookingID = req.body.invoiceID
         if(!bookingID){
             res.json({status:'err'})
@@ -189,7 +185,6 @@ module.exports={
     }),
     getInvoiceDetails:((req, res)=>{
         const id = req.params.id
-        console.log(id);
         userHelpers.getBookingData(id).then((data)=>{
             res.json({status:'done', data:data})
         })

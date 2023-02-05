@@ -12,7 +12,6 @@ import {FiGrid} from 'react-icons/fi'
 
 const GalleryNav = () => {
   const [activeNav, setActiveNav]=useState('gallery')
-  console.log(activeNav);
 
 
   return (

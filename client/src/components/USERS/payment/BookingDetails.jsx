@@ -114,7 +114,6 @@ export default function ProductCards() {
             headers: {Authorization: token}
         }
         ).then((resp)=>{
-            console.log(resp);
             if(resp.data.status=='err'){
                 setFormErr(resp.data.data)
             }

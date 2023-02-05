@@ -1,11 +1,8 @@
 import React from 'react'
 import './login.css'
-
 import { useEffect, useState } from 'react'
-
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
+import {axiosAdminInstance} from '../../../Instance/Axios'
 
 const AdminLogin = () => {
 
@@ -23,7 +20,7 @@ const AdminLogin = () => {
 
 
   useEffect(()=>{
-    const adminData = localStorage.getItem("adminData")
+    const adminData = localStorage.getItem("admin")
     if(adminData){
       window.location.href='/admin'
     }
@@ -32,14 +29,10 @@ const AdminLogin = () => {
 
   const handleRecPassword = async (e)=>{
     e.preventDefault();
-    console.log('recovered mail id: ', reqMail);
-    const recMail = await axios.post('http://localhost:8000/admin/recovermail',{reqMail}).then((response)=>{
+    const recMail = await axiosAdminInstance.post('/recovermail',{reqMail}).then((response)=>{
       let data = response.data
-      console.log(data);
       setForPass(false)
       setResetPass(data.msg)
-      // setPassField(true)
-      console.log('sssss',data.access_Token);
       setAuth(data.access_Token)
     })
 
@@ -52,15 +45,18 @@ const AdminLogin = () => {
       password: password
     }
     e.preventDefault();
-    const response = await axios.post('http://localhost:8000/admin/login',data).then((res)=>{
+    const response = await axiosAdminInstance.post('/login',data).then((res)=>{
       let resData = res.data
-      console.log(resData);
       if(resData.status==='done'){
         localStorage.setItem("admin",resData.admin)
         navigate('/admin')
       }
-      if(resData.status=='username Err') setLoginErr('Invalid Username')
-      if(resData.status=='password Err') setLoginPassErr('Invalid Password')
+      if(resData.status=='username Err'){
+        setLoginErr('Invalid Username')
+      }
+      if(resData.status=='password Err'){
+        setLoginPassErr('Invalid Password')
+      } 
       
     })
   }

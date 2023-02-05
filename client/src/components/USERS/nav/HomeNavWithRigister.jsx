@@ -46,15 +46,12 @@ const HomeNav = () => {
   const userId = useSelector((state) => state.user.loginUserDetails.userID);
 
 
-  console.log(activeNav);
-
   // login section start
   const registerCall = ()=>{
     
     setVisible(false)
     setLoginVisible(true)
     setNavActive(false)
-    console.log('login call done');
   }
   
 
@@ -97,10 +94,8 @@ const HomeNav = () => {
 
 // register call start -------------------->
   const onCreate = async (values) => {
-    console.log('Received values of form yyyy: ', values);
     const response = await axiosUserInstance.post('/signup',values).then((res)=>{
       let resData = res.data
-      console.log(resData);
       if(resData.status=='err'){
         setRegErr(resData.data)
       }
@@ -274,10 +269,8 @@ const HomeNav = () => {
 
 // login start -------------------->
   const onFinish = async (values) => {
-    console.log('Received values of form: ', values);
     const response = await axiosUserInstance.post('/login',values).then((res)=>{
       let resData = res.data
-      console.log(resData);
       if(resData.status=='err'){
         setLoginErr(resData.data)
       }

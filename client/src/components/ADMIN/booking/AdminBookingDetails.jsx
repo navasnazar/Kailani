@@ -56,7 +56,12 @@ const AdminBookingDetails = () => {
   }, [render])
 
   const getAllBooking = async()=>{
-    const response = await axiosAdminInstance.get('/getAllBooking').then((data)=>{
+    const token = localStorage.getItem('admin')
+    const response = await axiosAdminInstance.get('/getAllBooking',
+    {
+      headers: {Authorization: token}
+    }
+    ).then((data)=>{
       if(data.data.status=='done'){
         setBookingData(data.data.data)
       }
@@ -67,13 +72,17 @@ const AdminBookingDetails = () => {
   }
 
   const handleInvoice = (id)=>{
-    console.log(id);
     dispatch(getPreBookingInvoiceAdmin(id)) 
     navigate('/admin/PreInvoice')
   }
 
   const handleButtonChange = async(id)=>{
-    const response = await axiosAdminInstance.post('/statusChange', {id}).then((data)=>{
+    const token = localStorage.getItem('admin')
+    const response = await axiosAdminInstance.post('/statusChange', {id},
+    {
+      headers: {Authorization: token}
+    }
+    ).then((data)=>{
       if(data.data.status=='done'){
         setTimeout(() => {
           let x = Math.random() * 100;
@@ -84,7 +93,12 @@ const AdminBookingDetails = () => {
   }
 
   const handleCheckIn = async (id)=>{
-    const response = await axiosAdminInstance.post('/CheckInChange', {id}).then((data)=>{
+    const token = localStorage.getItem('admin')
+    const response = await axiosAdminInstance.post('/CheckInChange', {id},
+    {
+      headers: {Authorization: token}
+    }
+    ).then((data)=>{
       if(data.data.status=='done'){
         setTimeout(() => {
           let x = Math.random() * 100;
@@ -95,7 +109,12 @@ const AdminBookingDetails = () => {
   }
 
   const handleCheckOut = async(id)=>{
-    const response = await axiosAdminInstance.post('/CheckOutChange', {id}).then((data)=>{
+    const token = localStorage.getItem('admin')
+    const response = await axiosAdminInstance.post('/CheckOutChange', {id},
+    {
+      headers: {Authorization: token}
+    }
+    ).then((data)=>{
       if(data.data.status=='done'){
         setTimeout(() => {
           let x = Math.random() * 100;
@@ -106,8 +125,12 @@ const AdminBookingDetails = () => {
   }
 
   const hanldeBookingDelete = async(id)=>{
-    console.log(id);
-      const response = await axiosAdminInstance.post('/bookingDelete', {id}).then((data)=>{
+    const token = localStorage.getItem('admin')
+      const response = await axiosAdminInstance.post('/bookingDelete', {id},
+      {
+        headers: {Authorization: token}
+      }
+      ).then((data)=>{
         if(data.data.status=='done'){
           let x = Math.random() * 100;
           setRender(x)

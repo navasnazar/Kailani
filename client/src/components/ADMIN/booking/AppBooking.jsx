@@ -36,9 +36,13 @@ const AppBookingDetails = () => {
   }, [])
 
   const getAllBooking = async()=>{
-    const response = await axiosAdminInstance.get('/getAllBooking').then((data)=>{
+    const token = localStorage.getItem('admin')
+    const response = await axiosAdminInstance.get('/getAllBooking',
+    {
+      headers: {Authorization: token}
+    }
+    ).then((data)=>{
       if(data.data.status=='done'){
-        console.log(data.data.data);
         setBookingData(data.data.data)
       }
       if(data.data.status=='err'){
@@ -48,7 +52,6 @@ const AppBookingDetails = () => {
   }
 
   const handleInvoice = (id)=>{
-    console.log(id);
     dispatch(getPreBookingInvoiceAdmin(id)) 
     navigate('/admin/PreInvoice')
   }

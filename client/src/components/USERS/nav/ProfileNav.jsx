@@ -12,7 +12,6 @@ import {FiGrid} from 'react-icons/fi'
 
 const ProfileNav = () => {
   const [activeNav, setActiveNav]=useState('profile')
-  console.log(activeNav);
 
 
   return (

@@ -28,7 +28,6 @@ const Logout = () => {
 
 
     const logoutFunction = ()=>{
-        console.log('logout clicked');
         localStorage.removeItem('userToken')
         toast.success('Logout Success!', {
           position: "top-right",

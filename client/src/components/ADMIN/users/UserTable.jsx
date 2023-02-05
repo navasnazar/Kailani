@@ -39,7 +39,6 @@ const UserTable = () => {
     },[])
 
     
-    console.log(blockStatus);
 
 
   return (

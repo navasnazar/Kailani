@@ -31,7 +31,6 @@ const PreBooking = () => {
             headers: {Authorization: token}
         }
         ).then((resp)=>{
-            console.log(resp);
             if(resp.data.status=='err'){
                 navigate('/')
             }

@@ -7,12 +7,19 @@ const bcrypt = require('bcrypt')
 const objectId=require('mongodb').ObjectId
 const BookingDB = require('../models/userModel/BookingSchema')
 
+const {
+    SECRET_TOKEN_ADMIN
+} = process.env
+
+const createAccessToken = (payload)=>{
+    return jwt.sign(payload,SECRET_TOKEN_ADMIN,{expiresIn:'1d'})
+}
+
 module.exports={
     login:(data)=>{
         let validation={done:false, err:false, passErr:false}
         return new Promise(async(resolve, reject)=>{
             adminData = await AdminDB.findOne({username:data.username})
-            console.log('xxx',adminData);
             if(adminData){ 
                 const isMatch = await bcrypt.compare(data.password, adminData.password)
                 if(!isMatch){
@@ -20,9 +27,7 @@ module.exports={
                     resolve([validation])
                 }else{
                     validation.done=true
-                    const token = jwt.sign(
-                    {admin:data.username},"secret123")
-                    console.log('token:',token);
+                    const token = createAccessToken({admin:data.username});
                     resolve([validation,token])
                 }
             }else{
@@ -36,7 +41,6 @@ module.exports={
         return new Promise(async(resolve, reject)=>{
             await AdminDB.findOne({username:recMail}).then((res)=>{
                 if(res){
-                    console.log('done',res);
                     validation.done=true;
                     resolve({validation, res})
                 }else{
